@@ -1,25 +1,71 @@
-import logo from './logo.svg';
+import {useState} from 'react'
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+export default function App() {
+  const [todo,updateTodo]=useState("")
+  const [todoList,setTodo]=useState([
+    {
+      id:1,
+      todoItem:'html'
+    },
+    {
+      id:2,
+      todoItem:'css'
+    }
+  ])
 
-export default App;
+  let newId=3
+
+  
+
+  function addNewItem(){
+    if(todo===""){
+      alert("add input value")
+    }else{
+      let newAddedValue=[
+      ...todoList,
+      {
+      id:newId++,
+      todoItem:todo
+      }
+    ]
+    setTodo(
+      newAddedValue
+    )
+    updateTodo("")
+  }
+  
+}
+  function onDeleteItem(id){
+    let filterTodos=todoList.filter((each)=>{
+      return(each.id!==id)
+
+    })
+    setTodo(filterTodos)
+  }
+ 
+return (
+  <div className="App">
+    <div className='input-group'>
+    <input type="text"  value={todo} onChange={(e)=>{
+      updateTodo(e.target.value)
+    }}/>
+    <button className="button" type="button" onClick={()=>{addNewItem()}}>add</button>
+    </div>
+    <ul className='list-group mt-5'>
+      
+        {todoList.map((each)=>{
+          return(
+          <li className='list-group-item'>
+            <p>{each.todoItem}</p>
+            <button className='btn' onClick={()=>{onDeleteItem(each.id)}}>❌</button>
+          </li>
+          )
+        })
+      
+      
+      }
+    </ul>
+  </div>
+)
+}
